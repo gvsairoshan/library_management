@@ -78,7 +78,7 @@
                                         $query->execute();
                                         
                                         while($result = $query->fetch()){
-                                            $name = $cryption->abbreviateName($result['member_name']);
+                                            $name = $result['member_name'];
                                             ?>
                                             <option value="<?=$result['member_id'];?>"><?=$name; ?> </option>
                                             <?php

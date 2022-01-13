@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2019 at 10:57 PM
--- Server version: 10.4.8-MariaDB
--- PHP Version: 7.3.11
+-- Generation Time: Jan 13, 2022 at 07:33 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -28,8 +27,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `books`
 --
 
-CREATE DATABASE `library_db`;
-
 CREATE TABLE `books` (
   `book_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
@@ -47,8 +44,8 @@ INSERT INTO `books` (`book_id`, `category_id`, `book`, `author`, `ISBN`, `is_iss
 (1, 9, 'Dune', 'Frank Herbert', 4832951841, 0),
 (2, 9, 'I, Robot', 'Isaac Asimov', 2356324563, 1),
 (3, 9, 'Neuromancer', 'William Gibson', 2384235235, 0),
-(4, 9, 'Brave New World', 'Aldous Huxley', 3456455234, 0),
-(5, 9, 'Do Androids Dream of Electric Sheep?', 'Philip K. Dick', 5475675745, 1);
+(5, 9, 'Do Androids Dream of Electric Sheep?', 'Philip K. Dick', 5475675745, 1),
+(6, 9, 'No way home', 'Stan lee', 4543535353, 0);
 
 -- --------------------------------------------------------
 
@@ -102,8 +99,8 @@ CREATE TABLE `loaned_books` (
 --
 
 INSERT INTO `loaned_books` (`transaction_id`, `book_id`, `personnel_id`, `member_id`, `date_of_issue`, `date_of_return`) VALUES
-(1, 5, 1, 1, '11.12.2019 22:37', ''),
-(2, 2, 1, 2, '11.12.2019 22:37', '');
+(1, 5, 1, 1000, '11.12.2019 22:37', ''),
+(2, 2, 1, 1000, '11.12.2019 22:37', '');
 
 -- --------------------------------------------------------
 
@@ -122,8 +119,8 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`member_id`, `member_name`, `is_active`) VALUES
-(1, 'SmCw8DcNxNr3D8IBcw6d1g==', 1),
-(2, 'Q1m7Jjuuxf8cOMcd+ypYjA==', 0);
+(1000, 'abcd', 1),
+(1001, 'Noor', 1);
 
 -- --------------------------------------------------------
 
@@ -142,7 +139,7 @@ CREATE TABLE `personnel` (
 --
 
 INSERT INTO `personnel` (`personnel_id`, `personnel_login`, `personnel_password`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3');
+(1000, 'admin', 'xyz');
 
 --
 -- Indexes for dumped tables
@@ -186,7 +183,7 @@ ALTER TABLE `personnel`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -204,13 +201,13 @@ ALTER TABLE `loaned_books`
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1002;
 
 --
 -- AUTO_INCREMENT for table `personnel`
 --
 ALTER TABLE `personnel`
-  MODIFY `personnel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `personnel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
