@@ -13,7 +13,7 @@
         $bookID = $_POST['inputBookID'];
         $date = date("d.m.Y G:i");
         
-        $insertBook = $pdo->prepare('INSERT INTO loaned_books SET book_id = :inputBookID, personnel_id = 1, member_id = :memberID, date_of_issue = :date');
+        $insertBook = $pdo->prepare('INSERT INTO loaned_books SET book_id = :inputBookID, personnel_id = 1000, member_id = :memberID, date_of_issue = :date');
         $insertBook->execute(array('inputBookID' => $bookID, 'memberID' => $memberID, 'date'=> $date));
 
         $updateBookStatus = $pdo->prepare('UPDATE books SET is_issued = 1 WHERE book_id = :inputBookID');

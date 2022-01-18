@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2022 at 07:33 AM
+-- Generation Time: Jan 18, 2022 at 05:00 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.11
 
@@ -41,11 +41,12 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`book_id`, `category_id`, `book`, `author`, `ISBN`, `is_issued`) VALUES
-(1, 9, 'Dune', 'Frank Herbert', 4832951841, 0),
+(1, 9, 'Dune', 'Frank Herbert', 4832951841, 1),
 (2, 9, 'I, Robot', 'Isaac Asimov', 2356324563, 1),
-(3, 9, 'Neuromancer', 'William Gibson', 2384235235, 0),
+(3, 9, 'Neuromancer', 'William Gibson', 2384235235, 1),
 (5, 9, 'Do Androids Dream of Electric Sheep?', 'Philip K. Dick', 5475675745, 1),
-(6, 9, 'No way home', 'Stan lee', 4543535353, 0);
+(6, 9, 'No way home', 'Stan lee', 4543535353, 1),
+(8, 3, 'three men in a boat', 'ruskin bond', 3345678901, 1);
 
 -- --------------------------------------------------------
 
@@ -99,8 +100,12 @@ CREATE TABLE `loaned_books` (
 --
 
 INSERT INTO `loaned_books` (`transaction_id`, `book_id`, `personnel_id`, `member_id`, `date_of_issue`, `date_of_return`) VALUES
-(1, 5, 1, 1000, '11.12.2019 22:37', ''),
-(2, 2, 1, 1000, '11.12.2019 22:37', '');
+(1, 5, 1000, 1000, '11.12.2019 22:37', ''),
+(2, 2, 1000, 1000, '11.12.2019 22:37', ''),
+(3, 3, 1000, 1001, '13.01.2022 13:43', ''),
+(4, 1, 1000, 1001, '13.01.2022 13:44', ''),
+(6, 6, 1000, 1001, '17.01.2022 5:38', ''),
+(11, 8, 1000, 1006, '18.01.2022 4:27', '');
 
 -- --------------------------------------------------------
 
@@ -120,7 +125,12 @@ CREATE TABLE `members` (
 
 INSERT INTO `members` (`member_id`, `member_name`, `is_active`) VALUES
 (1000, 'abcd', 1),
-(1001, 'Noor', 1);
+(1001, 'Noor', 1),
+(1002, 'Roshan', 1),
+(1003, 'Ayush Legend', 0),
+(1004, 'tony stark', 0),
+(1005, 'steve rogers', 0),
+(1006, 'ram', 1);
 
 -- --------------------------------------------------------
 
@@ -131,15 +141,16 @@ INSERT INTO `members` (`member_id`, `member_name`, `is_active`) VALUES
 CREATE TABLE `personnel` (
   `personnel_id` int(11) NOT NULL,
   `personnel_login` varchar(50) COLLATE utf16_turkish_ci NOT NULL,
-  `personnel_password` varchar(50) COLLATE utf16_turkish_ci NOT NULL
+  `personnel_password` varchar(50) COLLATE utf16_turkish_ci NOT NULL,
+  `email` varchar(40) COLLATE utf16_turkish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_turkish_ci;
 
 --
 -- Dumping data for table `personnel`
 --
 
-INSERT INTO `personnel` (`personnel_id`, `personnel_login`, `personnel_password`) VALUES
-(1000, 'admin', 'xyz');
+INSERT INTO `personnel` (`personnel_id`, `personnel_login`, `personnel_password`, `email`) VALUES
+(1000, 'admin', 'xyz', 'dnoorali2015@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -149,7 +160,8 @@ INSERT INTO `personnel` (`personnel_id`, `personnel_login`, `personnel_password`
 -- Indexes for table `books`
 --
 ALTER TABLE `books`
-  ADD PRIMARY KEY (`book_id`);
+  ADD PRIMARY KEY (`book_id`),
+  ADD KEY `category_id` (`category_id`);
 
 --
 -- Indexes for table `categories`
@@ -161,7 +173,10 @@ ALTER TABLE `categories`
 -- Indexes for table `loaned_books`
 --
 ALTER TABLE `loaned_books`
-  ADD PRIMARY KEY (`transaction_id`);
+  ADD PRIMARY KEY (`transaction_id`),
+  ADD KEY `loaned_books_ibfk_1` (`book_id`),
+  ADD KEY `loaned_books_ibfk_2` (`member_id`),
+  ADD KEY `loaned_books_ibfk_3` (`personnel_id`);
 
 --
 -- Indexes for table `members`
@@ -183,7 +198,7 @@ ALTER TABLE `personnel`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -195,19 +210,37 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `loaned_books`
 --
 ALTER TABLE `loaned_books`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1002;
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1007;
 
 --
 -- AUTO_INCREMENT for table `personnel`
 --
 ALTER TABLE `personnel`
   MODIFY `personnel_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `books`
+--
+ALTER TABLE `books`
+  ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `loaned_books`
+--
+ALTER TABLE `loaned_books`
+  ADD CONSTRAINT `loaned_books_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `loaned_books_ibfk_2` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `loaned_books_ibfk_3` FOREIGN KEY (`personnel_id`) REFERENCES `personnel` (`personnel_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

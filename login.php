@@ -67,6 +67,7 @@
             </div>
             <input type="submit" class="btn btn-light btn-block" value="Login"/><br />
         </form>
+        <div><a href="http://localhost/library-management-system-master/resetpwd.php">Forgot Password</a><div>
     </div>
 </body>
 </html>
