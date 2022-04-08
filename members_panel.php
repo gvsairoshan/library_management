@@ -32,7 +32,7 @@
     <script src="assets/js/bootstrap.js"></script>
 </head>
 
-<body>
+<body style="background-color:#ADD8E6;">
     <div class="container">
         <form action="" method="post">
             <fieldset>
